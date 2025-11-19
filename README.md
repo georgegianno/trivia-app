@@ -1,7 +1,7 @@
 -This project is built on python 3.11.10 and commands for Ubuntu OS. 
 
 -For a complete build run the following commands in the directory of your choice. It pulls the project and builds it one-take:
-    cd trivia
+    cd trivia-app
     make build_app
 
 - In case you are using a different python version you might have to install manually, but the Makefile contains useful tasks to make the process easy.
