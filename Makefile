@@ -85,8 +85,6 @@ sync_local:
 
 # Builds the whole application from scratch.
 build_app: 
-	git clone https://github.com/georgegianno/trivia-app
-	cd ./trivia	
 	make virtualenv
 	make install_requirements 
 	make create_db 
