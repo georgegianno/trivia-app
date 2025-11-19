@@ -8,8 +8,6 @@ from django.db import transaction
 from django.conf import settings
 
 class Command(BaseCommand):
-    check_unique_questions = []
-    duplicate_questions = []
     # The notes below explain the thoughts behind this logic:
     help = " \
         1. This command should populate the Trivia api database in our db. We could go with the traditional \
@@ -24,7 +22,7 @@ class Command(BaseCommand):
         (i.e. connection issues). \
         \
         3. The uniqueness of the texts is ensured by unique hashes. Hashing the texts allows to map the objects relations \
-        even before the ids are created, and they exist for this reason. The uniqueness of relations is ensured \
+        even before the ids are created, and it makes queries faster. The uniqueness of relations is ensured \
         via unique_together() in application.models.py. The human-readable texts are stored after escaping special characters. \
         \
         4. When the text of a model is changed, it is re-hashed via signals.py. No duplicates are allowed in terms of text.\
@@ -33,17 +31,7 @@ class Command(BaseCommand):
         5. I have intentionally not used try-except blocks, because if something goes wrong, we want to re-import the \
         data until everything is ok.\
         \
-        6. The attribute 'check_unique_questions' of this class is an extra validator, in case the api token returns \
-        the same question (this should not happen, but it did happen in questions: \
-            'The “fairy” type made it’s debut in which generation of the Pokemon core series games?', \
-            'Who painted the Mona Lisa?' \
-            'When did the French Revolution begin?'). \
-        In such scenario I keep the first question-answers pair. I prefer to 'catch' the \
-        duplicate questions using an extra iteration in the 'duplicate_questions' checker, \
-        over using the 'ignore_conflicts' parameter in the bulk_actions, which would recreate the same \
-        QuestionAnswer object twice (or more) and break integrity. \
-        \
-        7. I use the format() function a lot, (f"" is better is probably better but does not work in older python versions)."
+        6. I use the format() function a lot, (f"" is better is probably better but does not work in older python versions)."
     
     def add_arguments(self, parser):
         parser.add_argument(
@@ -135,11 +123,6 @@ class Command(BaseCommand):
         uncreated_questions = []
         for item in data:
             question_text = html.unescape(item['question'])
-            if item['question'] in self.check_unique_questions:
-                self.duplicate_questions.append(item['question'])
-                # self.stdout.write(('Duplicated question: {}, and response: {}'.format(question_text, item)))
-                continue
-            self.check_unique_questions.append(item['question'])
             question_hash = hash_text(question_text)
             category_name = html.unescape(item['category'])
             category_hash = hash_text(category_name)
@@ -158,14 +141,15 @@ class Command(BaseCommand):
                 })
                 uncreated_questions.append(question_hash)
                 
-        Category.objects.bulk_create(categories_to_create)
+        Category.objects.bulk_create(categories_to_create, ignore_conflicts=True)
         self.update_category_map()
 
         for item in questions_to_create:
             for category_hash, object in item.items():
                 object.category_id = self.category_map[category_hash]
         Question.objects.bulk_create([object for item in questions_to_create
-            for object in item.values()])
+            for object in item.values()], ignore_conflicts=True)
+        
         self.update_question_map()
         
     def create_question_answers(self, data):
@@ -174,10 +158,6 @@ class Command(BaseCommand):
         answer_questions_values = []
         for item in data:
             question_text = html.unescape(item['question'])
-            if item['question'] in self.duplicate_questions:
-                self.stdout.write(('Duplicated question: {}, and response: {}'.format(question_text, item)))
-                continue
-            self.check_unique_questions.append(item['question'])
             question_hash = hash_text(question_text)
             correct_answer = html.unescape(item['correct_answer'])
             correct_hash = hash_text(correct_answer)
@@ -198,7 +178,7 @@ class Command(BaseCommand):
                     uncreated_answers.append(incorrect_hash) 
                 answer_questions_values.append(incorrect_answer_map)
         Answer.objects.bulk_create([item['answer'] for item in answer_questions_values \
-            if item.get('answer')]) 
+            if item.get('answer')], ignore_conflicts=True) 
         
         self.update_answer_map()
     
@@ -210,7 +190,8 @@ class Command(BaseCommand):
                     'is_correct': item['is_correct']
                 })
             )
-        QuestionAnswer.objects.bulk_create(question_answers_to_create)  
+        
+        QuestionAnswer.objects.bulk_create(question_answers_to_create, ignore_conflicts=True)  
     
     def trivia_import_data(self):
         if not self.session_token:
