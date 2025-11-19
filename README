@@ -7,7 +7,7 @@
 
 - You will find useful tasks in Makefile with descriptions of what each task does, in comments.
 
-- I have included .pgpass and sudo commands in Makefile to make it easier to setup, they should'n be included in production repo.
+- I have included .pgpass and sudo commands in Makefile to make it easier to setup, they shouldn't be included in production repo.
 
 - To sync local settings use:
     make sync_local
@@ -19,4 +19,5 @@
 
 -I decided to increase complexity of the task by designing a simple game, conceptually related to the task, 
 to demonstrate some more features of django and web development that I am familiar with.
-You will find instructions on how to play the game in the project/game/README file.
+
+-You will find instructions on how to play the game in the project/game/README file.
