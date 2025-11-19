@@ -1,0 +1,25 @@
+-The game rules are simple:
+    - Each player pays some money and plays one game round.
+    - Each round consists of some questions with increasing difficulty (some easy, some medium, some hard)
+    - Each player has some seconds of time to answer the questions
+    - The first wrong or out of time answer terminates the game and the player loses.
+    - If the page of a game is refreshed the player loses.
+    - If a player wins the game, they are rewarded with all the money invested in the game by all players until now.
+    - If a player wins the game then they have the option to destroy this meaningless game.
+
+-The initial values of cost, difficulty and time limit are defined in the Game class. I have set some example default values.
+
+-The whole idea is based on sessions. The session key of a player is the identifier of who they are and what they have done.
+
+-I kept things simple and did not use login or any other credentials to identify players. In real world we would need
+emails, passwords and strong credentials. My universe is much simpler.
+
+-A player can not see previously seen question using the same session key. They can see questions they have seen before 
+using different session keys (i.e. anonymous tab), but they should play a lot to beat the game this way.
+
+-The command to destroy the game can be tested using the relevant make command in the MakeFile
+
+-The purpose of this game is fun, not profit, otherwise I would reward players with 
+    10 * the cost of each round,
+to ensure most players won't beat the game by just changing sessions and printscreen the questions to google the answers, 
+and gradually lower the multiplier based on how many times they have already won.

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Start game? - Trivia App{% endblock %}
+
+{% block content %}
+    <div class="container mt-5 d-flex justify-content-center">
+        <div class="card p-4" style="max-width: 600px;">
+            {% include 'messages.html' %}
+            <div class="card-body text-center">
+                <p>
+                    Welcome to the game! You will answer <strong>10 random questions</strong>, with <strong>increasing difficulty</strong>.
+                    You will have <strong>5 seconds</strong> for each question. Answer correctly to proceed to the next question.
+                </p>
+                <p>
+                    If your time expires, you lose. If your answer is wrong, you lose. If you refresh the page while in a game, you lose.
+                    If all questions are answered correctly, you will win <strong>all the money invested in the game.</strong>
+                </p>
+                <p>Play responsibly and good luck!</p>
+
+                <div class="d-flex justify-content-center gap-3 mt-3 flex-wrap">
+                    <a href="{% url 'question-list' %}" class="btn btn-secondary btn-lg mt-3">Back to Questions</a>
+                    {% include 'game/pay_to_play.html' with game_cost=game_cost %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,36 @@
+<a href="{% url 'starting-game' %}" id="pay-to-play" class="btn btn-success btn-lg mt-3">Pay {{ game_cost }} and start game!</a>
+
+{% block scripts %}
+    
+    <script>
+        // Ensure the player enters game via the provided link.
+        document.addEventListener('DOMContentLoaded', () => {
+            const gameSecret = '{{ game_secret }}'
+            const gameStartAction = '{{ game_start_action }}'
+            const csrfToken = '{{ csrf_token }}'
+            const link = document.getElementById('pay-to-play')
+            const url = link.href
+            link.addEventListener('click', (e) => {
+                e.preventDefault()
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify({
+                        game_secret: gameSecret,
+                        action: gameStartAction
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    window.location.replace(data.redirect_url)
+                })
+                .catch(error => console.error('Error updating game:', error))
+            })
+        })
+    </script>
+{% endblock %}

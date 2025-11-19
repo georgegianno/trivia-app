@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}You Win - Trivia App{% endblock %}
+
+{% block content %}
+<style>
+/* Card styling improvements */
+.card {
+    border-radius: 1rem;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    background: #ffffff;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+/* Header styling */
+.card-header {
+    font-weight: 600;
+    font-size: 1.3rem;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
+/* Body text styling */
+.card-body p {
+    font-size: 1.1rem;
+    color: #212529;
+}
+
+/* Buttons */
+.btn-lg {
+    min-width: 200px;
+}
+</style>
+
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card p-5" style="max-width: 800px; width: 100%;">
+        <div class="card-header mb-4">
+            🎉 Congratulations! 🎉
+        </div>
+
+        <div class="card-body text-center">
+            {% if message %}
+                <div class="alert alert-success text-center mb-3">{{ message }}</div>
+            {% endif %}
+
+            <p>You made it! You beat us. Your reward is <strong>{{ reward }} money!</strong></p>
+            <p>You have a chance to destroy this dangerous game, continue your day, or just keep winning.</p>
+
+        <div class="d-flex justify-content-center gap-4 mt-4 flex-wrap">
+            <div class="d-flex flex-column gap-3">
+                </div>
+                    <a href="{% url 'destroy-game' %}" class="btn btn-danger btn-lg">Destroy this game</a>
+                </div>
+                <a href="{% url 'question-list' %}" class="btn btn-secondary btn-lg mt-3">Back to Questions</a>
+                {% include 'game/pay_to_play.html' with game_cost=game_cost %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

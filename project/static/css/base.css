@@ -1,0 +1,127 @@
+body { padding-top: 60px; }
+.question-item { margin-bottom: 15px; }
+.meta { font-size: 0.85em; color: #555; }
+.filter-form .form-group { margin-right: 15px; }
+.pagination a, .pagination span { margin: 0 5px; }
+
+.card {
+    border-radius: 1rem;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    background: #ffffff;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+.card-header {
+    font-weight: 600;
+    font-size: 1.1rem;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    color: #212529;
+}
+
+body { padding-top: 60px; }
+.question-item { margin-bottom: 15px; }
+.meta { font-size: 0.85em; color: #555; }
+.filter-form .form-group { margin-right: 15px; }
+.pagination a, .pagination span { margin: 0 5px; }
+
+.card {
+    border-radius: 1rem;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    background: #ffffff;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+.card-header {
+    font-weight: 600;
+    font-size: 1.1rem;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    color: #212529;
+}
+
+#timer {
+    font-weight: bold;
+    color: #0d6efd; 
+    font-size: 1.2rem;
+}
+
+.text-center.mb-3 {
+    background-color: #e7f1ff;
+    padding: 10px 15px;
+    border-radius: 0.5rem;
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.card-header {
+    font-weight: 600;
+    font-size: 1.3rem;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
+.card-body p {
+    font-size: 1.1rem;
+    color: #212529;
+}
+
+.btn-lg {
+    min-width: 200px;
+}
+
+.messages-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin-top: 50px;
+}
+
+.message {
+    padding: 10px 20px;
+    margin: 5px 0;
+    border-radius: 5px;
+    min-width: 250px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.message.warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.message.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+

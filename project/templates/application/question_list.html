@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Questions - Trivia App{% endblock %}
+
+{% block content %}
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card p-5" style="max-width: 1200px; width: 100%; min-height: 700px;">
+        <div class="card-body">
+            <h1 class="mb-4 text-center">Trivia Questions</h1>{% comment %} I assume that if there are no categories, db is empty {% endcomment %}
+
+            <form method="get" class="row g-3 mb-4">
+                {% if form.category.field.choices|length > 1 %}
+                    <div class="col-md-3">
+                        {{ form.category }}
+                    </div>
+                {% endif %}
+                {% if form.category.field.choices|length > 1 %}
+                    <div class="col-md-2">
+                        {{ form.difficulty }}
+                    </div>
+                {% endif %}
+
+                {% if form.category.field.choices|length > 1 %}
+                    <div class="col-md-2">
+                        {{ form.type }}
+                    </div>
+                {% endif %}
+                {% if form.category.field.choices|length > 1 %}
+                    <div class="col-md-3">
+                        {{ form.text }}
+                    </div>
+                    <div class="col-md-2 align-self-end" style="display: flex">
+                        <button type="submit" class="btn btn-primary w-100">Filter</button>
+                        <a href="{{ request.path }}" class="btn btn-secondary w-100 ms-2">Reset</a>
+    
+                    </div>
+                {% endif %}
+            </form>
+
+            <ul class="list-group mb-4">
+                {% for question in questions %}
+                <li class="list-group-item">
+                    <a href="{% url 'question-detail' id=question.id %}" class="fw-bold">{{ question.text }}</a>
+                    <div class="meta">{{ question.category.name }} | {{ question.display_difficulty }} | {{ question.display_type }}</div>
+                </li>
+                {% empty %}
+                <li class="list-group-item text-center">No questions found.</li>
+                {% endfor %}
+            </ul>
+
+            <p class="text-center text-muted mb-4">{{ num_total_results }} results found</p>
+            {% if is_paginated %}
+                {% include 'pagination.html' with page_obj=page_obj %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
