@@ -2,3 +2,4 @@ virtualenv/*
 .psql
 __pycache__/
 staticfiles/
+**/settings_local.py

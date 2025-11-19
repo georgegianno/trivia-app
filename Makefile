@@ -98,6 +98,4 @@ build_app:
 
 test:
 	sudo su postgres -c 'psql -f $(ROOT_DIR)/create_db_test.sql'
-	python manage.py test
-
-	
+	$(MANAGE) test
