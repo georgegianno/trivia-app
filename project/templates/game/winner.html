@@ -2,41 +2,19 @@
 
 {% block title %}You Win - Trivia App{% endblock %}
 
+{% block extra_styles %}
+    <style>
+        .card {border-radius: 1rem;box-shadow: 0 6px 20px rgba(0,0,0,0.1);background: #ffffff;transition: transform 0.2s ease;}
+        .card:hover {transform: translateY(-3px);}
+        .card-header {font-weight: 600;font-size: 1.3rem;background-color: #f8f9fa;border-radius: 0.5rem;
+            text-align: center;
+        }
+        .card-body p {font-size: 1.1rem;color: #212529;}
+        .btn-lg {min-width: 200px;}
+    </style>
+{% endblock %}
+
 {% block content %}
-<style>
-/* Card styling improvements */
-.card {
-    border-radius: 1rem;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-    background: #ffffff;
-    transition: transform 0.2s ease;
-}
-
-.card:hover {
-    transform: translateY(-3px);
-}
-
-/* Header styling */
-.card-header {
-    font-weight: 600;
-    font-size: 1.3rem;
-    background-color: #f8f9fa;
-    border-radius: 0.5rem;
-    text-align: center;
-}
-
-/* Body text styling */
-.card-body p {
-    font-size: 1.1rem;
-    color: #212529;
-}
-
-/* Buttons */
-.btn-lg {
-    min-width: 200px;
-}
-</style>
-
 <div class="container mt-5 d-flex justify-content-center">
     <div class="card p-5" style="max-width: 800px; width: 100%;">
         <div class="card-header mb-4">
