@@ -1,6 +1,6 @@
 -This project is built on python 3.11.10 and commands for Ubuntu OS. 
 
--For a complete build run the following command in the directory of your choice. It pulls the project and builds it one-take:
+-For a complete build run the following command in the directory of your choice. It builds the project one-take:
     cd trivia-app
     (Optional, I prefer to use pyenv for versions management:
          pyenv local 3.11.10 
