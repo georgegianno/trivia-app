@@ -12,9 +12,9 @@ class GameQuestion(models.Model):
         
 class Game(models.Model):
     QUESTIONS_DIFFICULTY_MAP = {
-        'easy': 4,
-        'medium': 3,
-        'hard': 3
+        'easy': 1,
+        'medium': 0,
+        'hard': 0
     }
     DEFAULT_COST = 5
     TIME_LIMIT =  7
@@ -42,3 +42,4 @@ class Winner(models.Model):
         )
         total_price = (totals.get('total_times') or D('0.00'))*(totals.get('total_money') or D('0.00'))
         return int(total_price) if total_price.to_integral_value() else float(total_price)
+    

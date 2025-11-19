@@ -11,9 +11,3 @@ MIDDLEWARE += [
     # Comment this line to view traceback of errors in debug mode
     'project.application.middleware.CustomErrorPagesMiddleware'
 ]
-
-DATABASES['default'].update({
-    'TEST': {
-        'NAME': 'trivia_db_test'
-    }
-})
