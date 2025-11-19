@@ -96,8 +96,8 @@ build_app:
 	make import_data
 	make run
 
-# Several testing commands could be written here for quick debugging.
 test:
-	$(MANAGE) testing_file
+	sudo su postgres -c 'psql -f $(ROOT_DIR)/create_db_test.sql'
+	python manage.py test
 
 	

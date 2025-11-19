@@ -32,7 +32,6 @@ class CorrectAnswerMixin:
         sorted_answers = []
         if posted_answers:
             sorted_answers = [obj for id in posted_answers for obj in question_answers if str(obj.answer.id)==id]
-            print(sorted_answers)
         return {'answers_order': posted_answers, 'question_answers': sorted_answers}
     
     def answer_is_correct(self, *args, **kwargs):

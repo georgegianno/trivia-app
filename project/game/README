@@ -17,8 +17,6 @@ emails, passwords and strong credentials. My universe is much simpler.
 -A player can not see previously seen question using the same session key. They can see questions they have seen before 
 using different session keys (i.e. anonymous tab), but they should play a lot to beat the game this way.
 
--The command to destroy the game can be tested using the relevant make command in the MakeFile
-
 -The purpose of this game is fun, not profit, otherwise I would reward players with 
     10 * the cost of each round,
 to ensure most players won't beat the game by just changing sessions and printscreen the questions to google the answers, 
