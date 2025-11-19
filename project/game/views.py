@@ -171,6 +171,7 @@ class PlayGame(CorrectAnswerMixin, DetailView):
         winner.save()
         context['reward'] = winner.get_reward()
         context['game_cost'] = '{} money'.format(Game.DEFAULT_COST)
+        Game.objects.all().delete()
         return render(self.request, self.winning_template, context)
     
     def player_wins_actions(self, **kwargs):
