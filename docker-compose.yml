@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: trivia_db_owner
+      POSTGRES_PASSWORD: NA0;z3-b3£0@
+      POSTGRES_DB: trivia_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    volumes:
+      - .:/code
+    ports:
+      - '5000:5000'
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: trivia_db
+      DB_USER: trivia_db_owner
+      DB_PASSWORD: NA0;z3-b3£0@
+
+    command: >
+      sh -c '
+        python manage.py migrate &&
+        python manage.py import_data &&
+        python manage.py collectstatic --noinput &&
+        python manage.py runserver 0.0.0.0:5000
+      '
+
+volumes:
+  postgres_data:
+
+
+

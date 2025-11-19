@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}Question Detail - Trivia App{% endblock %}
+
+{% block game_button %}
+    {% if not update_game_timestamp %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-3 d-flex justify-content-center">
+    <div class="card p-5" style="max-width: 1000px; width: 100%; min-height: 500px; position: relative;">
+        <div class="card-body">
+            <div class="card-header mb-4 text-center">
+                {{ question.category.name }} | {{ question.display_difficulty }} | {{ question.display_type }}
+            </div>
+
+            <h5 class="card-title mb-4 text-center">{{ question.text }}</h5>
+
+            <span id="game-message-container">
+            </span>
+            {% include 'messages.html' %}
+
+            <form method="post" {% if update_game_timestamp %}id="game-form"{% endif %}>
+                {% csrf_token %}
+                {% for obj in question_answers %}
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="answer" id="answer{{ forloop.counter }}" value="{{ obj.answer.id }}" 
+                            {% if request.POST.answer|stringformat:'s' == obj.answer.id|stringformat:'s' %}checked{% endif %}>
+                        <label class="form-check-label" for="answer{{ forloop.counter }}">
+                            {{ obj.answer.text }}
+                        </label>
+                    </div>
+                {% endfor %}
+                {% if update_game_timestamp %}
+                    <input type="hidden" name="client_timestamp" id="client-timestamp">
+                {% endif %}
+
+                <div class="d-flex gap-2 flex-wrap mt-3">
+                    <button type="submit" class="btn btn-success mt-3">Submit Answer</button>
+                    <a href="{% url 'question-list' %}" class="btn btn-secondary mt-3">Back to Questions</a>
+                </div>
+                {% comment %} Here we hide the order from the user {% endcomment %}
+                <input type="hidden" name="answers_order" value="{% for id in answers_order %}{{ id }}{% if not forloop.last %},{% endif %}{% endfor %}">
+            </form>
+
+            <span id="game-message-container"></span>
+
+            {% if num_question %}
+                <div class="mt-4 text-center text-muted">
+                    <strong>Question {{ num_question }}</strong>
+                    <br>
+                    <div class="card-timer-container text-center mt-2 mb-3">
+                        Time elapsed: <span id="timer">0</span> seconds
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+    {% if update_game_timestamp %}
+        <script>
+            const timeLimit = '{{ time_limit }}'
+            const csrfToken = '{{ csrf_token }}'
+            const gameSecret = '{{ game_secret }}'
+            const gameUpdateAction = '{{ game_update_action }}'
+            const playerLosesAction = 'player_loses_action'
+            const updateTimestampUrl = "{% url 'update-game-timestamp' %}"
+            const playerLosesUrl = "{% url 'player-loses' %}"
+            const numQuestion = '{{ num_question }}'
+            var playerHasSubmitted = false
+            var timeStopped = false
+
+            document.addEventListener('DOMContentLoaded', () => {
+
+                initTimer()
+                
+                async function initTimer() {
+                    // Ensure the closed tabs won't keep games active in db (hope it works).
+                    window.addEventListener('beforeunload', playerLosesListener)
+                    // Update the server timestamp and time is running.
+                    timeStartsListener()
+                    playerSubmitListener()
+                    await sleep(timeLimit)
+                    timeEnds()
+                }
+
+                async function sleep(seconds) {
+                    ms = seconds*1000
+                    return new Promise(resolve => setTimeout(resolve, ms))
+                }
+
+                function startTimer() {
+                    let secondsLeft = parseInt(timeLimit)
+                    const timerElement = document.getElementById('timer')
+                    timerElement.textContent = secondsLeft
+
+                    const timerInterval = setInterval(() => {
+                        if (timeStopped || playerHasSubmitted) {
+                            clearInterval(timerInterval)
+                            return
+                        }
+                        secondsLeft -= 1
+                        timerElement.textContent = secondsLeft
+
+                        if (secondsLeft <= 0) {
+                            clearInterval(timerInterval)
+                        }
+                    }, 1000)
+                }
+
+                function timeStartsListener () {
+                    fetch(updateTimestampUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrfToken,
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify({
+                            action: gameUpdateAction,
+                            game_secret: gameSecret,
+                            timestamp: new Date().toISOString()
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        const messageContainer = document.getElementById('game-message-container')
+                        if (numQuestion > 1) {
+                            messageContainer.style.display = 'block'
+                            messageContainer.innerHTML = data.message_html
+                        }
+                        startTimer()
+
+                    })
+                    .catch(error => console.error('Error updating game:', error))
+                }
+                
+                function playerSubmitListener(e) {
+                    const form = document.getElementById('game-form')
+                    form.addEventListener('submit', (e) => {
+                        e.preventDefault()
+                        playerHasSubmitted = true
+                        document.getElementById('client-timestamp').value = new Date().toISOString()
+                        form.submit()
+                    })
+                }
+
+                function timeEnds() {
+                    timeStopped = true
+                    fetch(playerLosesUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrfToken,
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify({
+                            game_secret: gameSecret,
+                            action: playerLosesAction
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Player lost:', data)
+                        window.location.replace(data.redirect_url)
+                    })
+                    .catch(error => console.error('Error updating game:', error))
+                }
+
+                function playerLosesListener() {
+                    if (playerHasSubmitted==true || timeStopped==true) return
+                    const body = JSON.stringify({
+                        game_secret: gameSecret,
+                        action: playerLosesAction,
+                        no_message: true
+                    })
+                    navigator.sendBeacon(playerLosesUrl, body)
+                }
+            })
+        </script>
+    {% endif %}
+{% endblock %}

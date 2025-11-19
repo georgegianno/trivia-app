@@ -1,0 +1,5 @@
+virtualenv
+virtualenv/*
+.psql
+__pycache__/
+staticfiles/
