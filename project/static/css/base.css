@@ -88,39 +88,4 @@ body { padding-top: 60px; }
     min-width: 200px;
 }
 
-.messages-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    margin-top: 50px;
-}
 
-.message {
-    padding: 10px 20px;
-    margin: 5px 0;
-    border-radius: 5px;
-    min-width: 250px;
-    text-align: center;
-    font-weight: 500;
-}
-
-.message.success {
-    background-color: #d4edda;
-    color: #155724;
-}
-
-.message.error {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
-.message.warning {
-    background-color: #fff3cd;
-    color: #856404;
-}
-
-.message.info {
-    background-color: #d1ecf1;
-    color: #0c5460;
-}

@@ -12,9 +12,9 @@ class GameQuestion(models.Model):
         
 class Game(models.Model):
     QUESTIONS_DIFFICULTY_MAP = {
-        'easy': 1,
-        'medium': 0,
-        'hard': 0
+        'easy': 4,
+        'medium': 3,
+        'hard': 3
     }
     DEFAULT_COST = 5
     TIME_LIMIT =  7
