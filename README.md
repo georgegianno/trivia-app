@@ -23,7 +23,7 @@
 
 - The increased complexity of import_data.py is explained in the file's comments, along with several details on how and why things were done this way.
 
--I decided to increase complexity of the task by designing a simple game, conceptually related to the task, 
+-I decided to increase complexity designing a simple game, conceptually related to the Trivia API, 
     to demonstrate some more features of django and web development that I am familiar with.
 
 -You will find instructions on how to play the game in the project/game/README file.
