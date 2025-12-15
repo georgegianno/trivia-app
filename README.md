@@ -6,10 +6,9 @@
 
 -For a complete build run the following command in the directory of your choice. It builds the project one-take:<br>
     cd trivia-app<br>
-    (Optional, I prefer to use pyenv for versions management:
-         pyenv local 3.11.10 
+    pyenv local 3.11.10 (optional, I prefer to use pyenv for versions management)
     )<br>
-    make build_app
+    make build_app<br>
 
 - I have included docker files for a quick build, too: (cd trivia-app && docker-compose build && docker-compose up)
 
