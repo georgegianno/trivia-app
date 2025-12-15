@@ -1,4 +1,8 @@
--This project is built on python 3.11.10 and commands for Ubuntu OS. 
+- This project was completed over the course of four days using Python 3.11.10 and PostgreSQL.<br>
+
+- It's purpose is to demonstrate several concepts I am familiar with. It consumes trivia API to import a database with questions and answers, with one-off sync.<br>
+  
+- The app contains a list of questions with filters, a detail page for every question with the option to choose the correct answer and a game I designed.<br> 
 
 -For a complete build run the following command in the directory of your choice. It builds the project one-take:<br>
     cd trivia-app<br>
